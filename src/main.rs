@@ -48,6 +48,8 @@ struct Args {
     token_limit: Option<usize>,
     #[arg(short, long)]
     string_limit: Option<usize>,
+    #[arg(short, long)]
+    ignore_punct: bool,
 }
 
 fn main() {
@@ -69,6 +71,16 @@ fn main() {
             .unwrap()
             .into_iter()
             .flat_map(flatten_groups)
+            .filter(|token| {
+                if args.ignore_punct {
+                    match token {
+                        TokenTree::Group(_) | TokenTree::Literal(_) | TokenTree::Ident(_) => true,
+                        TokenTree::Punct(_) => false, // Ignore punctuation . , * : etc
+                    }
+                } else {
+                    true
+                }
+            })
             .for_each(|token| {
                 //dbg!(&token);
                 tokens += 1;
