@@ -1,0 +1,3 @@
+
+# The default hashmap has poor performance, in most cases ahash should be used instead
+disallowed-types = ["std::collections::HashMap", "std::collections::HashSet"]

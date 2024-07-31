@@ -1,0 +1,46 @@
+[package]
+name = "token-counter"
+version = "0.1.0"
+edition = "2021"
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+enum_glob_use = "deny"
+pedantic = "deny"
+nursery = "deny"
+
+[profile.release]
+opt-level = 3 # change to s to reduce binary size with a performance tradeoff
+lto = "fat"
+codegen-units = 1
+panic = 'abort'
+strip = "symbols"
+
+[build]
+rustflags = [
+"-C", 
+# Improves performance while sacrificing compatibility
+#"target-cpu=native",
+#Pick one of the two following options, prefer mold if available
+"link-arg=-fuse-ld=lld", 
+#"link-arg=-fuse-ld=mold"
+
+# Nightly
+   "-Zshare-generics=y",
+   "-Zthreads=0",
+]
+
+[dependencies]
+itertools = "0.13"
+anyhow = "1.0"
+clap = { version = "4.5", features = ["derive"] }
+proc-macro2 = "1.0"
+litrs = "0.4"
+rayon = "1.10"
+num-format = { version = "0.4", features = ["with-system-locale"] }
+#indicatif = { version = "0.17", features = ["rayon"] }
+# Enable one of the following if this program uses hashmaps
+#rustc-hash = "2.0" # Poor quality but very high integer performance
+#ahash = "0.8" # Should be used most of the time instead of the default HashMap implementation
