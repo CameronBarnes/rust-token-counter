@@ -18,20 +18,6 @@ codegen-units = 1
 panic = 'abort'
 strip = "symbols"
 
-[build]
-rustflags = [
-"-C", 
-# Improves performance while sacrificing compatibility
-#"target-cpu=native",
-#Pick one of the two following options, prefer mold if available
-"link-arg=-fuse-ld=lld", 
-#"link-arg=-fuse-ld=mold"
-
-# Nightly
-   "-Zshare-generics=y",
-   "-Zthreads=0",
-]
-
 [dependencies]
 itertools = "0.13"
 anyhow = "1.0"
